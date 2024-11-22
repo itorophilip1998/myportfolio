@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Lavishly+Yours&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import url("primereact/resources/themes/lara-light-cyan/theme.css");
+@import url("primeicons/primeicons.css");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.pageIndex {
+  background-color: rgba(0, 0, 0, 0.92);
+  // width: calc(300px / 100%);
+}
+// .sidebarIndex {
+//   background-color: rgba(0, 0, 0, 0.875);
+// }
+
+body {
+  overflow: hidden;
+  // font-family:Roboto;
+  font-weight: 400;
+  font-style: normal;
+  cursor: none; /* Hide the default cursor */
+  cursor: url("/public/myProfile.jpg"), auto !important;
+}
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge, and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.p-card-title {
+  color: #22c55ec0;
+}
+.p-timeline-event-connector	 {
+  background: #22c55ec0;
+}
+
+.experience {
+  p {
+    ::before {
+      content: "=>";
+    }
+  }
+}
