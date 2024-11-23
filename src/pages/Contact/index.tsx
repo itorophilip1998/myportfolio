@@ -1,4 +1,9 @@
+import { useState } from "react";
+import emailjs from "@emailjs/browser";
+
 const Contact = () => {
+  const [status, setStatus] = useState<string>("");
+
   const openLinkOutside = (link: string) => {
     if (!link) {
       console.error("Invalid link provided.");
@@ -6,6 +11,29 @@ const Contact = () => {
     }
 
     window.open(link, "_blank", "noopener,noreferrer");
+  };
+
+  const handleSendEmail = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus("Sending...");
+
+    const form = e.currentTarget;
+
+    // Replace these with your EmailJS credentials
+    const serviceID = "service_zmw52zc";
+    const templateID = "template_20qc655";
+    const publicKey = "_J49LBHIQ4HI3uTGV";
+
+    emailjs.sendForm(serviceID, templateID, form, publicKey).then(
+      () => {
+        setStatus("Message sent successfully!");
+        form.reset();
+      },
+      (error) => {
+        console.error("Failed to send email:", error);
+        setStatus("Failed to send message. Please try again later.");
+      }
+    );
   };
 
   return (
@@ -73,26 +101,35 @@ const Contact = () => {
         </h2>
         <p className="text-lg mb-6">I'M VERY RESPONSIVE TO MESSAGES</p>
 
-        <form className="flex flex-col gap-7  md:w-[70%] mx-auto ">
+        <form
+          className="flex flex-col gap-7  md:w-[70%] mx-auto "
+          onSubmit={handleSendEmail}
+        >
           <input
             type="text"
             placeholder="Name"
+            name="user_name"
             className="text-xl bg-transparent border border-gray-800 p-5 rounded-lg text-white placeholder-gray-400 focus:ring shadow focus:outline-none focus:ring-green-500"
           />
           <input
             type="email"
             placeholder="Email"
+            name="user_email"
             className="text-xl bg-transparent border border-gray-800 p-5 rounded-lg text-white placeholder-gray-400 shadow focus:outline-none focus:ring focus:ring-green-500"
           />
 
           <textarea
-            name=""
+            name="message"
             id=""
             rows={8}
             className="bg-transparent text-xl border border-gray-800 resize-none p-5 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring focus:ring-green-500"
           ></textarea>
           <button className="p-5  bg-green-500 rounded-lg text-xl">Send</button>
         </form>
+        {/* Notification */}
+        {status && (
+          <div className="mt-4 text-red-400 font-medium text-lg">{status}</div>
+        )}
       </div>
     </div>
   );
