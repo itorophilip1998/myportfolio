@@ -11,13 +11,13 @@ if (!rootElement) {
 createRoot(rootElement).render(
   <StrictMode>
     <div>
-      {/* Mobile View */}
-      <div className="block sm:hidden">
+      {/* Desktop View Only */}
+      <div className="hidden md:block">
         <App />
       </div>
-      {/* Desktop View */}
-      <div className="block md:hidden items-center justify-center text-white bg-black h-screen">
-        Oops, sorry this portfolio is only for mobile view.
+      {/* Mobile View Only */}
+      <div className="flex items-center w-screen  justify-center text-white bg-black h-screen md:hidden">
+        Oops, sorry this portfolio is only for desktop view.
       </div>
     </div>
   </StrictMode>

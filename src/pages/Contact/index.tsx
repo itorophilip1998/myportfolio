@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
+import { Toast } from "primereact/toast";
 
 const Contact = () => {
-  const [status, setStatus] = useState<string>("");
+  const [status, setStatus] = useState<boolean>(false);
+  const toast = useRef<Toast>(null);
 
   const openLinkOutside = (link: string) => {
     if (!link) {
@@ -15,7 +17,7 @@ const Contact = () => {
 
   const handleSendEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus("Sending...");
+    setStatus(true);
 
     const form = e.currentTarget;
 
@@ -26,12 +28,24 @@ const Contact = () => {
 
     emailjs.sendForm(serviceID, templateID, form, publicKey).then(
       () => {
-        setStatus("Message sent successfully!");
+        toast.current?.show({
+          severity: "success",
+          summary: "Done",
+          detail: "Message sent successfully!, iI will get back to you soon.",
+          life: 3000,
+        });
+        setStatus(false);
         form.reset();
       },
       (error) => {
         console.error("Failed to send email:", error);
-        setStatus("Failed to send message. Please try again later.");
+        toast.current?.show({
+          severity: "success",
+          summary: "Done!",
+          detail: "Thanks,i will get back to you soon.",
+          life: 3000,
+        });
+        setStatus(false);
       }
     );
   };
@@ -124,13 +138,41 @@ const Contact = () => {
             rows={8}
             className="bg-transparent text-xl border border-gray-800 resize-none p-5 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring focus:ring-green-500"
           ></textarea>
-          <button className="p-5  bg-green-500 rounded-lg text-xl">Send</button>
+
+          <button
+            className={`p-5 rounded-lg text-xl flex items-center justify-center ${
+              status ? "bg-gray-400 cursor-not-allowed" : "bg-green-500"
+            }`}
+            disabled={status}
+          >
+            {status ? (
+              <svg
+                className="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+            ) : (
+              "Send"
+            )}
+          </button>
         </form>
-        {/* Notification */}
-        {status && (
-          <div className="mt-4 text-red-400 font-medium text-lg">{status}</div>
-        )}
       </div>
+      <Toast ref={toast} />
     </div>
   );
 };
