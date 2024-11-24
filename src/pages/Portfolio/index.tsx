@@ -69,7 +69,8 @@ const projects = [
   },
 ]; 
 
-const openLinkOutside = (link: string) => {
+
+  const openLinkOutside = (link: string) => {
   if (!link) {
     console.error("Invalid link provided.");
     return;

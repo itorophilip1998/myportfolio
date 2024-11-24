@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Typical from "react-typical";
 
 const Home = () => {
@@ -30,6 +31,15 @@ const Home = () => {
     return () => clearInterval(interval); // Cleanup interval on unmount
   }, []);
 
+  const openLinkOutside = (link: string) => {
+    if (!link) {
+      console.error("Invalid link provided.");
+      return;
+    }
+
+    window.open(link, "_blank", "noopener,noreferrer");
+  };
+  const navigate = useNavigate();
   return (
     <div>
       {/* <h1 className="text-center text-white text-4xl mt-8 mb-4">
@@ -75,10 +85,20 @@ const Home = () => {
           </p>
 
           <div className="flex gap-3">
-            <button className="btn cursor-pointer bg-green-500 text-xl mt-[4rem] rounded-full w-[400px] p-4 transition duration-300 ease-in-out hover:bg-green-700">
+            <button
+              onClick={() => navigate("/contact")}
+              className="btn cursor-pointer bg-green-500 text-xl mt-[4rem] rounded-full w-[400px] p-4 transition duration-300 ease-in-out hover:bg-green-700"
+            >
               More about me
             </button>
-            <button className="btn cursor-pointer bg-green-500 text-xl mt-[4rem] rounded-full w-[400px] p-4 transition duration-300 ease-in-out hover:bg-green-700">
+            <button
+              onClick={() =>
+                openLinkOutside(
+                  "https://docs.google.com/document/d/1fyO4snBUtBF4eDk2Hroyo94hLRn818vHh1ACBKG80W4/edit?usp=sharing"
+                )
+              }
+              className="btn cursor-pointer bg-green-500 text-xl mt-[4rem] rounded-full w-[400px] p-4 transition duration-300 ease-in-out hover:bg-green-700"
+            >
               Download CV
             </button>
           </div>
@@ -90,7 +110,7 @@ const Home = () => {
             transition={{ duration: 0.7 }} // Animation duration
           >
             <span className="absolute -right-4 -top-4 h-12 w-12 border-r-4 border-t-4 border-green-500 transform rotate-135"></span>
-            <img 
+            <img
               src="/myProfile.jpg"
               className="h-[500px] w-[400px] object-cover "
               alt=""
